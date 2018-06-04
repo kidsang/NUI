@@ -140,3 +140,7 @@ endif()
 if(LINUX OR WINDOWS)
     cocos_copy_target_res(${APP_NAME} COPY_TO ${APP_RES_DIR} FOLDERS ${GAME_RES_FOLDER})
 endif()
+
+add_subdirectory(../../ ${ENGINE_BINARY_PATH}/nui)
+target_link_libraries (${APP_NAME} nui)
+include_directories(../../)

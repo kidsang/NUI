@@ -113,20 +113,20 @@ namespace nui
 		Visibility m_visibility;
 		float m_width;
 		float m_height;
-		float m_min_width;
-		float m_min_height;
-		float m_max_width;
-		float m_max_height;
+		//float m_min_width;
+		//float m_min_height;
+		//float m_max_width;
+		//float m_max_height;
 		float m_actual_width;
 		float m_actual_height;
 		Thickness m_margin;
-		Thickness m_padding;
+		//Thickness m_padding;
 		HorizontalAlignment m_horizontal_alignment;
 		VerticalAlignment m_vertical_alignment;
 
 		std::string m_name;
 		Widget* m_parent;
-		std::vector<Widget*> m_children;
+		//std::vector<Widget*> m_children;
 
 		enum class InternalFlags
 		{
