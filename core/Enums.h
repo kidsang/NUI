@@ -1,6 +1,6 @@
 #pragma once
-#ifndef Enums_h__
-#define Enums_h__
+#ifndef NUI_Enums_h__
+#define NUI_Enums_h__
 
 #include <cstdint>
 
@@ -33,4 +33,4 @@ namespace nui
 	};
 }
 
-#endif // Enums_h__
+#endif // NUI_Enums_h__

@@ -1,8 +1,8 @@
 #pragma once
-#ifndef Panel_h__
-#define Panel_h__
+#ifndef NUI_Panel_h__
+#define NUI_Panel_h__
 
 
 
 
-#endif // Panel_h__
+#endif // NUI_Panel_h__

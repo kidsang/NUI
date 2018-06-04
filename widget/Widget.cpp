@@ -4,14 +4,6 @@ namespace nui
 {
 	Widget::Widget()
 		: m_visibility(Visibility::Visible)
-		, m_width(0)
-		, m_height(0)
-		//, m_min_width(0)
-		//, m_min_height(0)
-		//, m_max_width(0)
-		//, m_max_height(0)
-		, m_actual_width(0)
-		, m_actual_height(0)
 		, m_horizontal_alignment(HorizontalAlignment::Stretch)
 		, m_vertical_alignment(VerticalAlignment::Stretch)
 		, m_parent(nullptr)
@@ -22,5 +14,18 @@ namespace nui
 	{
 
 	}
+
+	void Widget::Measure(Size available_size)
+	{
+		if (!IsMeasureDirty() && m_previous_available_size == available_size)
+			return;
+
+		Size prev_size = m_actual_size;
+		Size actual_size = DoMeasure(available_size);
+		//if (m_actual_size == actual_size)
+
+		InvalidateArrange();
+	}
+
 }
 

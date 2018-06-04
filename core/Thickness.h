@@ -1,6 +1,6 @@
 #pragma once
-#ifndef Thickness_h__
-#define Thickness_h__
+#ifndef NUI_Thickness_h__
+#define NUI_Thickness_h__
 
 struct Thickness
 {
@@ -18,4 +18,4 @@ struct Thickness
 	{}
 };
 
-#endif // Thickness_h__
+#endif // NUI_Thickness_h__
