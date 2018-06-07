@@ -27,28 +27,18 @@ namespace nui
 		}
 	}
 
-	LayoutRequest* LayoutManager::LayoutQueue::Add(Widget* widget)
-	{
-		LayoutRequest* request = CreateRequest();
-		widget->request = request
-	}
-
-	void LayoutManager::LayoutQueue::Remove(LayoutRequest* request)
-	{
-
-	}
-
-	LayoutRequest* LayoutManager::LayoutQueue::CreateRequest()
+	LayoutRequest* LayoutManager::LayoutQueue::CreateRequest(Widget* widget)
 	{
 		if (m_pocket)
 		{
 			LayoutRequest* request = m_pocket;
 			m_pocket = m_pocket->next;
 			request->next = request->prev = nullptr;
+			request->widget = widget;
 			m_pocket_size -= 1;
 			return request;
 		}
-		return new LayoutRequest();
+		return new LayoutRequest(widget);
 	}
 
 	void LayoutManager::LayoutQueue::ReleaseRequest(LayoutRequest* request)
@@ -67,6 +57,21 @@ namespace nui
 		}
 	}
 
+	nui::Widget* LayoutManager::LayoutQueue::GetTopMost()
+	{
+		Widget* found = nullptr;
+		uint32_t tree_level = 0xffffffff;
+		for (LayoutRequest* request = m_head; request != nullptr; request = request->next)
+		{
+			if (request->widget->m_tree_level < tree_level)
+			{
+				found = request->widget;
+				tree_level = found->m_tree_level;
+			}
+		}
+		return found;
+	}
+
 	void LayoutManager::UpdateLayout()
 	{
 		if (m_in_update_layout)
@@ -75,7 +80,23 @@ namespace nui
 
 		while (m_measure_queue.NotEmpty() || m_arrange_queue.NotEmpty())
 		{
+			// loop for measure
+			while (true)
+			{
+				Widget* widget = m_measure_queue.GetTopMost();
+				if (!widget)
+					break;
+				widget->Measure(widget->m_previous_available_size);
+			}
 
+			// loop for arrange
+			while (m_measure_queue.IsEmpty())
+			{
+				Widget* widget = m_arrange_queue.GetTopMost();
+				if (!widget)
+					break;
+				widget->Arrange(widget->m_previous_final_rect);
+			}
 		}
 	}
 
@@ -83,7 +104,7 @@ namespace nui
 	{
 		if (widget->GetMeasureRequest())
 			return;
-		LayoutRequest* request = m_measure_queue.Add(widget);
+		LayoutRequest* request = m_measure_queue.CreateRequest(widget);
 		widget->SetMeasureRequest(request);
 	}
 
@@ -92,7 +113,7 @@ namespace nui
 		LayoutRequest* request = widget->GetMeasureRequest();
 		if (!request)
 			return;
-		m_measure_queue.Remove(request);
+		m_measure_queue.ReleaseRequest(request);
 		widget->SetMeasureRequest(nullptr);
 	}
 
@@ -100,7 +121,7 @@ namespace nui
 	{
 		if (widget->GetArrangeRequest())
 			return;
-		LayoutRequest* request = m_arrange_queue.Add(widget);
+		LayoutRequest* request = m_arrange_queue.CreateRequest(widget);
 		widget->SetArrangeRequest(request);
 	}
 
@@ -109,7 +130,7 @@ namespace nui
 		LayoutRequest* request = widget->GetArrangeRequest();
 		if (!request)
 			return;
-		m_arrange_queue.Remove(request);
+		m_arrange_queue.ReleaseRequest(request);
 		widget->SetArrangeRequest(nullptr);
 	}
 

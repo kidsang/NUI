@@ -13,7 +13,7 @@ namespace nui
 		LayoutRequest* prev;
 		LayoutRequest* next;
 
-		LayoutRequest() : widget(nullptr), prev(nullptr), next(nullptr) {}
+		explicit LayoutRequest(Widget* widget) : widget(widget), prev(nullptr), next(nullptr) {}
 	};
 
 	class LayoutManager
@@ -25,14 +25,11 @@ namespace nui
 		public:
 			LayoutQueue();
 			~LayoutQueue();
-			LayoutRequest* Add(Widget* widget);
-			void Remove(LayoutRequest* request);
 			inline bool IsEmpty() { return m_head == nullptr; }
 			inline bool NotEmpty() { return m_head != nullptr; }
-
-		private:
-			LayoutRequest* CreateRequest();
+			LayoutRequest* CreateRequest(Widget* widget);
 			void ReleaseRequest(LayoutRequest* request);
+			Widget* GetTopMost();
 
 		private:
 			LayoutRequest* m_head;
@@ -54,8 +51,6 @@ namespace nui
 		bool m_in_update_layout; // 是否正处于布局中
 		LayoutQueue m_measure_queue;
 		LayoutQueue m_arrange_queue;
-		//std::list<Widget*> m_measure_queue;
-		//std::list<Widget*> m_arrange_queue;
 
 #pragma region constructor
 	public:
@@ -66,6 +61,8 @@ namespace nui
 	private:
 		static LayoutManager* s_instance;
 #pragma endregion constructor
+
+		friend class Widget;
 	};
 }
 

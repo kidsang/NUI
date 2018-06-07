@@ -7,6 +7,7 @@ namespace nui
 		, m_horizontal_alignment(HorizontalAlignment::Stretch)
 		, m_vertical_alignment(VerticalAlignment::Stretch)
 		, m_parent(nullptr)
+		, m_tree_level(0)
 		, m_measure_request(nullptr)
 		, m_arrange_request(nullptr)
 	{
@@ -15,6 +16,22 @@ namespace nui
 	Widget::~Widget()
 	{
 
+	}
+
+	void Widget::InvalidateMeasure()
+	{
+		if (IsMeasureDirty())
+			return;
+		SetMeasureDirty(true);
+		LayoutManager::Instance()->AddToMeasureQueue(this);
+	}
+
+	void Widget::InvalidateArrange()
+	{
+		if (IsArrangeDirty())
+			return;
+		SetArrangeDirty(true);
+		LayoutManager::Instance()->AddToArrangeQueue(this);
 	}
 
 	void Widget::Measure(Size available_size)

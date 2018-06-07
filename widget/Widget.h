@@ -9,6 +9,7 @@
 #include "core/Assert.h"
 #include "core/Enums.h"
 #include "core/Size.h"
+#include "core/Rect.h"
 #include "core/Thickness.h"
 #include "core/LayoutManager.h"
 
@@ -96,7 +97,6 @@ namespace nui
 
 #pragma region public functions
 	public:
-		void Measure(Size available_size);
 		void InvalidateMeasure();
 		void InvalidateArrange();
 
@@ -109,9 +109,19 @@ namespace nui
 			return CheckInternalFlag(InternalFlags::MeasureDirty);
 		}
 
+		void SetMeasureDirty(bool value)
+		{
+			SetInternalFlag(InternalFlags::MeasureDirty, value);
+		}
+
 		inline bool IsArrangeDirty() const
 		{
 			return CheckInternalFlag(InternalFlags::ArrangeDirty);
+		}
+
+		void SetArrangeDirty(bool value)
+		{
+			SetInternalFlag(InternalFlags::ArrangeDirty, value);
 		}
 
 		inline bool IsMeasureInProgress() const
@@ -119,9 +129,19 @@ namespace nui
 			return CheckInternalFlag(InternalFlags::MeasureInProgress);
 		}
 
+		inline void SetMeasureInProgress(bool value)
+		{
+			return SetInternalFlag(InternalFlags::MeasureInProgress, value);
+		}
+
 		inline bool IsArrangeInProgress() const
 		{
 			return CheckInternalFlag(InternalFlags::ArrangeInProgress);
+		}
+
+		inline void SetArrangeInProgress(bool value)
+		{
+			return SetInternalFlag(InternalFlags::ArrangeInProgress, value);
 		}
 #pragma endregion protected get/setters
 
@@ -132,7 +152,9 @@ namespace nui
 
 #pragma region private funtions
 	private:
-		enum class InternalFlags;
+		void Measure(Size available_size);
+		void Arrange(Rect final_rect);
+
 		inline bool CheckInternalFlag(InternalFlags flag) const
 		{
 			return m_internal_flags.test((size_t)flag);
@@ -182,13 +204,20 @@ namespace nui
 		Visibility m_visibility;
 		Size m_size;
 		Size m_actual_size;
-		Size m_previous_available_size;
 		Thickness m_margin;
 		HorizontalAlignment m_horizontal_alignment;
 		VerticalAlignment m_vertical_alignment;
 
+		Size m_previous_available_size;
+		Rect m_previous_final_rect;
+
+
 		//std::string m_name;
+
+		// 布局树上的父节点
 		Widget* m_parent;
+		// 布局树上的层级，越小越靠近根部
+		uint32_t m_tree_level;
 
 		// 用于判断Widget是否位于布局队列中
 		LayoutRequest* m_measure_request;
@@ -203,6 +232,13 @@ namespace nui
 			ArrangeDirty,
 			MeasureInProgress,
 			ArrangeInProgress,
+
+			// 是否为布局根节点
+			IsLayoutRoot,
+
+			// 是否挂载在布局根节点下
+			// 游离于布局根节点之外的Widget不需要被布局
+			IsAttachedToLayoutRoot,
 
 
 
