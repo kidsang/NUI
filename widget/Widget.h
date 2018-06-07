@@ -5,10 +5,12 @@
 #include <string>
 #include <vector>
 #include <bitset>
+#include <list>
 #include "core/Assert.h"
 #include "core/Enums.h"
 #include "core/Size.h"
 #include "core/Thickness.h"
+#include "core/LayoutManager.h"
 
 namespace nui
 {
@@ -140,6 +142,39 @@ namespace nui
 		{
 			m_internal_flags.set((size_t)flag, value);
 		}
+
+		/**
+		 * 给LayoutManager用来判断是否在队列中
+		 */
+		inline LayoutRequest* GetMeasureRequest() const
+		{
+			return m_measure_request;
+		}
+
+		/**
+		 * 给LayoutManager用来判断是否在队列中
+		 */
+		inline void SetMeasureRequest(LayoutRequest* value)
+		{
+			m_measure_request = value;
+		}
+
+		/**
+		 * 给LayoutManager用来判断是否在队列中
+		 */
+		inline LayoutRequest* GetArrangeRequest() const
+		{
+			return m_arrange_request;
+		}
+
+		/**
+		 * 给LayoutManager用来判断是否在队列中
+		 */
+		inline void SetArrangeRequest(LayoutRequest* value)
+		{
+			m_arrange_request = value;
+		}
+
 #pragma endregion private funtions
 
 #pragma region private fields
@@ -154,6 +189,10 @@ namespace nui
 
 		//std::string m_name;
 		Widget* m_parent;
+
+		// 用于判断Widget是否位于布局队列中
+		LayoutRequest* m_measure_request;
+		LayoutRequest* m_arrange_request;
 
 
 		enum class InternalFlags
@@ -171,6 +210,8 @@ namespace nui
 		};
 		std::bitset<(size_t)InternalFlags::COUNT> m_internal_flags;
 #pragma endregion private fields
+
+		friend class LayoutManager;
 	};
 }
 

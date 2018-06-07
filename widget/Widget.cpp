@@ -7,6 +7,8 @@ namespace nui
 		, m_horizontal_alignment(HorizontalAlignment::Stretch)
 		, m_vertical_alignment(VerticalAlignment::Stretch)
 		, m_parent(nullptr)
+		, m_measure_request(nullptr)
+		, m_arrange_request(nullptr)
 	{
 	}
 

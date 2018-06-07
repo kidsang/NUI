@@ -9,7 +9,7 @@ struct Size
 	float width;
 	float height;
 
-	const float Eps = 1e-6;
+	const float Eps = 1e-6; // 对于一个界面库来说，这个精度足够了
 
 	Size()
 		: width(0), height(0)

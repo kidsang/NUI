@@ -5,7 +5,7 @@ project(nui)
 include(core/CMakeLists.txt)
 include(widget/CMakeLists.txt)
 
-set(NUI_SOURCE
+set(NUI_SOURCE NUI.h NUI.cpp
 	${NUI_CORE_SOURCE}
 	${NUI_WIDGET_SOURCE}
 )
