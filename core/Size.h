@@ -2,14 +2,12 @@
 #ifndef NUI_Size_h__
 #define NUI_Size_h__
 
-#include <cmath>
+#include "MathUtils.h"
 
 namespace nui
 {
 	struct Size
 	{
-		const float Eps = 1e-7; // 对于一个界面库来说，这个精度足够了
-
 		float width;
 		float height;
 
@@ -21,9 +19,16 @@ namespace nui
 			: width(width), height(height)
 		{}
 
+		Size& operator = (const Size& other)
+		{
+			this->width = other.width;
+			this->height = other.height;
+			return *this;
+		}
+
 		bool operator == (const Size& other) const
 		{
-			return fabs(width - other.width) < Eps && fabs(height - other.height) < Eps;
+			return MathUtils::AreClose(width, other.width) && MathUtils::AreClose(height, other.height);
 		}
 
 		bool operator != (const Size& other) const

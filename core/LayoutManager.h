@@ -3,10 +3,11 @@
 #define NUI_LayoutManager_h__
 
 #include <list>
-#include "widget/Widget.h"
 
 namespace nui
 {
+	class Widget;
+
 	struct LayoutRequest
 	{
 		Widget* widget;

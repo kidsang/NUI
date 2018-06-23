@@ -1,4 +1,5 @@
 #include "LayoutManager.h"
+#include "widget/Widget.h"
 
 namespace nui
 {
@@ -87,6 +88,7 @@ namespace nui
 				if (!widget)
 					break;
 				widget->Measure(widget->m_previous_available_size);
+				RemoveFromeMeasureQueue(widget);
 			}
 
 			// loop for arrange
@@ -96,6 +98,7 @@ namespace nui
 				if (!widget)
 					break;
 				widget->Arrange(widget->m_previous_final_rect);
+				RemoveFromeArrangeQueue(widget);
 			}
 		}
 	}

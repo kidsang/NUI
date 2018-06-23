@@ -1,6 +1,7 @@
 set(NUI_CORE_SOURCE
 	core/Assert.h
 	core/Enums.h
+	core/MathUtils.h
 	core/Size.h
 	core/Rect.h
 	core/Thickness.h

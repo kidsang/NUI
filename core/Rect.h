@@ -2,14 +2,13 @@
 #ifndef NUI_Rect_h__
 #define NUI_Rect_h__
 
-#include <cmath>
+#include "MathUtils.h"
+#include "Size.h"
 
 namespace nui
 {
 	struct Rect
 	{
-		const float Eps = 1e-7; // 对于一个界面库来说，这个精度足够了
-
 		float x;
 		float y;
 		float width;
@@ -44,10 +43,17 @@ namespace nui
 			return y + height;
 		}
 
+		Size Size() const
+		{
+			return nui::Size(width, height);
+		}
+
 		bool operator == (const Rect& other) const
 		{
-			return fabs(x - other.x) < Eps && fabs(y - other.y) < Eps
-				&& fabs(width - other.width) < Eps && fabs(height - other.height) < Eps;
+			return MathUtils::AreClose(x, other.x)
+				&& MathUtils::AreClose(y, other.y)
+				&& MathUtils::AreClose(width, other.width)
+				&& MathUtils::AreClose(height, other.height);
 		}
 
 		bool operator != (const Rect& other) const

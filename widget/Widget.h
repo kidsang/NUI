@@ -6,39 +6,71 @@
 #include <vector>
 #include <bitset>
 #include <list>
+#include <algorithm>
 #include "core/Assert.h"
 #include "core/Enums.h"
 #include "core/Size.h"
 #include "core/Rect.h"
 #include "core/Thickness.h"
 #include "core/LayoutManager.h"
+#include "visual/Visual.h"
 
 namespace nui
 {
 	class Widget
 	{
+		enum class InternalFlags;
+
+	protected:
 		Widget();
 		virtual ~Widget();
-
-		enum class InternalFlags;
 
 #pragma region public get/setters
 	public:
 
-		inline Visibility GetVisibility() const
-		{
-			return m_visibility;
-		}
+		//inline Visibility GetVisibility() const
+		//{
+		//	return m_visibility;
+		//}
+
+		//void SetVisibility(Visibility value);
+
+		//inline Size GetSize() const
+		//{
+		//	return m_size;
+		//}
+
+		void SetSize(float width, float height);
+
+		void SetSize(const Size& size);
+
+		void SetAutoSize();
+
+		void SetPercentageSize(float percent_width, float percent_height);
+
+		void SetPercentageSize(const Size& percent_size);
 
 		inline float GetWidth() const
 		{
 			return m_size.width;
 		}
 
+		void SetWidth(float value);
+
+		void SetAutoWidth();
+
+		void SetPercentageWidth(float value);
+
 		inline float GetHeight() const
 		{
 			return m_size.height;
 		}
+
+		void SetHeight(float value);
+
+		void SetAutoHeight();
+
+		void SetPercentageHeight(float value);
 
 		inline bool IsAutoWidth() const
 		{
@@ -80,30 +112,33 @@ namespace nui
 			return m_parent;
 		}
 
-		void SetVisibility(Visibility value);
+		inline Visual* GetVisual() const
+		{
+			return m_visual;
+		}
 
-		void SetWidth(float value);
 
-		void SetAutoWidth();
-
-		void SetPercentageWidth(float value);
-
-		void SetHeight(float value);
-
-		void SetAutoHeight();
-
-		void SetPercentageHeight(float value);
 #pragma endregion public get/setters
 
 #pragma region public functions
 	public:
+		void Measure(Size available_size);
+		void Arrange(Rect final_rect);
+
 		void InvalidateMeasure();
 		void InvalidateArrange();
 
+		/// <summary>	由Panel::AddChild()调用 </summary>
+		void SetParent(Widget* parent);
 #pragma endregion public functions
 
 #pragma region protected get/setters
 	protected:
+		inline const Size& GetSizeRef() const
+		{
+			return m_size;
+		}
+
 		inline bool IsMeasureDirty() const
 		{
 			return CheckInternalFlag(InternalFlags::MeasureDirty);
@@ -124,37 +159,63 @@ namespace nui
 			SetInternalFlag(InternalFlags::ArrangeDirty, value);
 		}
 
-		inline bool IsMeasureInProgress() const
+		//inline bool IsMeasureInProgress() const
+		//{
+		//	return CheckInternalFlag(InternalFlags::MeasureInProgress);
+		//}
+
+		//inline void SetMeasureInProgress(bool value)
+		//{
+		//	return SetInternalFlag(InternalFlags::MeasureInProgress, value);
+		//}
+
+		//inline bool IsArrangeInProgress() const
+		//{
+		//	return CheckInternalFlag(InternalFlags::ArrangeInProgress);
+		//}
+
+		//inline void SetArrangeInProgress(bool value)
+		//{
+		//	return SetInternalFlag(InternalFlags::ArrangeInProgress, value);
+		//}
+
+		inline bool IsMeasureDuringArrange() const
 		{
-			return CheckInternalFlag(InternalFlags::MeasureInProgress);
+			return CheckInternalFlag(InternalFlags::MeasureDuringArrange);
 		}
 
-		inline void SetMeasureInProgress(bool value)
+		inline void SetMeasureDuringArrange(bool value)
 		{
-			return SetInternalFlag(InternalFlags::MeasureInProgress, value);
-		}
-
-		inline bool IsArrangeInProgress() const
-		{
-			return CheckInternalFlag(InternalFlags::ArrangeInProgress);
-		}
-
-		inline void SetArrangeInProgress(bool value)
-		{
-			return SetInternalFlag(InternalFlags::ArrangeInProgress, value);
+			return SetInternalFlag(InternalFlags::MeasureDuringArrange, value);
 		}
 #pragma endregion protected get/setters
 
 #pragma region protected funtions
 	protected:
-		Size DoMeasure(Size available_size);
+
+		/// <summary>	子类重载测量方法 </summary>
+		/// <param name="available_size">	父节点的size </param>
+		/// <returns>	自身size </returns>
+		virtual Size DoMeasure(Size available_size);
+
+		virtual void DoArrange(Rect final_rect);
+
+		virtual void OnChildSizeChanged(Widget* child);
+
+		/// <summary>	返回除去margin后的available_size </summary>
+		static Size CalcSelfAvailableSize(const Widget& widget, Size available_size)
+		{
+			return Size(std::max(0.f, available_size.width - widget.m_margin.left - widget.m_margin.right)
+				, std::max(0.f, available_size.height - widget.m_margin.top - widget.m_margin.bottom));
+		}
+
+		/// <summary>	初始化渲染节点 </summary>
+		virtual void InitVisual();
+
 #pragma endregion protected funtions
 
 #pragma region private funtions
 	private:
-		void Measure(Size available_size);
-		void Arrange(Rect final_rect);
-
 		inline bool CheckInternalFlag(InternalFlags flag) const
 		{
 			return m_internal_flags.test((size_t)flag);
@@ -218,6 +279,8 @@ namespace nui
 		Widget* m_parent;
 		// 布局树上的层级，越小越靠近根部
 		uint32_t m_tree_level;
+		// 渲染树节点
+		Visual* m_visual;
 
 		// 用于判断Widget是否位于布局队列中
 		LayoutRequest* m_measure_request;
@@ -230,8 +293,9 @@ namespace nui
 			PercentageHeight, // 是否为百分比高度
 			MeasureDirty,
 			ArrangeDirty,
-			MeasureInProgress,
-			ArrangeInProgress,
+			//MeasureInProgress,
+			//ArrangeInProgress,
+			MeasureDuringArrange, // 由父节点在Arrange过程中触发的Measure
 
 			// 是否为布局根节点
 			IsLayoutRoot,
