@@ -31,6 +31,13 @@ namespace nui
 		Center, // 居中
 		Stretch, // 拉伸
 	};
+
+	// 贴图加载类型
+	enum class TextureResType
+	{
+		Normal, // 单张独立贴图
+		Atlas, // 合图
+	};
 }
 
 #endif // NUI_Enums_h__

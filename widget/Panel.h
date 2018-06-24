@@ -4,12 +4,30 @@
 
 #include <vector>
 #include "Widget.h"
+#include "core/Color.h"
 
 namespace nui
 {
 	class Panel : public Widget
 	{
 	public:
+
+		/// <summary>	±³¾°ÑùÊ½ </summary>
+		enum class BackgroundType
+		{
+			/// <summary>	ÎÞ±³¾°£¬Ä¬ÈÏÖµ </summary>
+			None,
+
+			/// <summary>	´¿É«±³¾° </summary>
+			Solid,
+
+			/// <summary>	½¥±ä±³¾° </summary>
+			Gradient,
+
+			/// <summary>	Í¼Æ¬±³¾° </summary>
+			Image,
+		};
+
 		Panel();
 		virtual ~Panel();
 
@@ -26,6 +44,26 @@ namespace nui
 	public:
 		void AddChild(Widget* child);
 		void RemoveChild(Widget* child);
+
+		void SetBackgroundType(BackgroundType type);
+
+		inline BackgroundType GetBackgroundType() const
+		{
+			return m_background_type;
+		}
+
+		void SetBackgroundColor(const Color& color);
+
+		Color GetBackgroundColor() const;
+
+		void SetBackgroundGradient(const Color& start_color, const Color& end_color);
+
+		Color GetBackgroundGradientStartColor() const;
+
+		Color GetBackgroundGradientEndColor() const;
+
+		void SetBackgroundImage(const std::string& file_name, TextureResType tex_res_type = TextureResType::Normal);
+
 
 #pragma endregion public funtions
 
@@ -50,6 +88,9 @@ namespace nui
 	private:
 		Thickness m_padding;
 		std::vector<Widget*> m_children;
+
+		BackgroundType m_background_type;
+
 #pragma endregion private fields
 	};
 }

@@ -19,8 +19,15 @@ namespace nui
 			return m_ccnode;
 		}
 
-		virtual void AddChild(Visual* child) override;
-		virtual void RemoveChild(Visual* child) override;
+		virtual void AddChild(Visual* child);
+
+		virtual void RemoveChild(Visual* child);
+
+		virtual void AddChildAt(Visual* child, uint32_t index);
+
+		virtual void RemoveChildAt(uint32_t index);
+
+		virtual uint32_t GetChildCount();
 
 	private:
 		cocos2d::Node* m_ccnode;

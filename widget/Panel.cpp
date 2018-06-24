@@ -4,6 +4,7 @@ namespace nui
 {
 
 	Panel::Panel()
+		: m_background_type(BackgroundType::None)
 	{
 
 	}
@@ -33,6 +34,58 @@ namespace nui
 		child->SetParent(nullptr);
 		auto iter = std::find(m_children.begin(), m_children.end(), child);
 		this->m_children.erase(iter);
+	}
+
+	void Panel::SetBackgroundType(BackgroundType type)
+	{
+		if (m_background_type == type)
+			return;
+		m_background_type = type;
+
+		switch (type)
+		{
+		case BackgroundType::None:
+			break;
+		case BackgroundType::Solid:
+			break;
+		case BackgroundType::Gradient:
+			break;
+		case BackgroundType::Image:
+			break;
+		default:
+			break;
+		}
+
+	}
+
+	void Panel::SetBackgroundColor(const Color& color)
+	{
+
+	}
+
+	Color Panel::GetBackgroundColor() const
+	{
+
+	}
+
+	void Panel::SetBackgroundGradient(const Color& start_color, const Color& end_color)
+	{
+
+	}
+
+	Color Panel::GetBackgroundGradientStartColor() const
+	{
+
+	}
+
+	Color Panel::GetBackgroundGradientEndColor() const
+	{
+
+	}
+
+	void Panel::SetBackgroundImage(const std::string& file_name, TextureResType tex_res_type /*= TextureResType::Normal*/)
+	{
+
 	}
 
 	Size Panel::DoMeasure(Size available_size)

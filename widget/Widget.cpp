@@ -8,7 +8,7 @@ namespace nui
 		, m_horizontal_alignment(HorizontalAlignment::Stretch)
 		, m_vertical_alignment(VerticalAlignment::Stretch)
 		, m_parent(nullptr)
-		, m_visual(nullptr)
+		, m_visual_root(nullptr)
 		, m_tree_level(0)
 		, m_measure_request(nullptr)
 		, m_arrange_request(nullptr)
@@ -17,10 +17,10 @@ namespace nui
 
 	Widget::~Widget()
 	{
-		if (m_visual)
+		if (m_visual_root)
 		{
-			delete m_visual;
-			m_visual = nullptr;
+			delete m_visual_root;
+			m_visual_root = nullptr;
 		}
 	}
 
@@ -189,10 +189,10 @@ namespace nui
 			return;
 
 		if (m_parent)
-			m_parent->m_visual->RemoveChild(m_visual);
+			m_parent->m_visual_root->RemoveChild(m_visual_root);
 
 		if (parent)
-			parent->m_visual->AddChild(m_visual);
+			parent->m_visual_root->AddChild(m_visual_root);
 
 		m_parent = parent;
 
@@ -230,10 +230,10 @@ namespace nui
 		InvalidateMeasure();
 	}
 
-	void Widget::InitVisual()
+	void Widget::InitVisualRoot()
 	{
-		NUI_ASSERT(!m_visual);
-		m_visual = CocosVisualFactory::Instance()->CreateEmpty();
+		NUI_ASSERT(!m_visual_root);
+		m_visual_root = CocosVisualFactory::Instance()->CreateEmpty();
 	}
 
 }

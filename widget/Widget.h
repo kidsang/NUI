@@ -112,9 +112,9 @@ namespace nui
 			return m_parent;
 		}
 
-		inline Visual* GetVisual() const
+		inline Visual* GetVisualRoot() const
 		{
-			return m_visual;
+			return m_visual_root;
 		}
 
 
@@ -210,7 +210,7 @@ namespace nui
 		}
 
 		/// <summary>	初始化渲染节点 </summary>
-		virtual void InitVisual();
+		virtual void InitVisualRoot();
 
 #pragma endregion protected funtions
 
@@ -280,7 +280,7 @@ namespace nui
 		// 布局树上的层级，越小越靠近根部
 		uint32_t m_tree_level;
 		// 渲染树节点
-		Visual* m_visual;
+		Visual* m_visual_root;
 
 		// 用于判断Widget是否位于布局队列中
 		LayoutRequest* m_measure_request;
