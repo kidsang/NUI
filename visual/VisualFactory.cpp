@@ -1,5 +1,5 @@
-#include "VisualFactory.h"
-#include "CocosVisualFactory.h"
+﻿#include "VisualFactory.h"
+#include "cocosvisual/CocosVisualFactory.h"
 
 namespace nui
 {
@@ -8,6 +8,8 @@ namespace nui
 	{
 		if (s_instance)
 			return;
+
+		// 使用cocos作为底层渲染库
 		s_instance = new CocosVisualFactory();
 	}
 

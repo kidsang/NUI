@@ -1,17 +1,39 @@
 #include "Panel.h"
+#include "visual/IColorVisual.h"
+#include "visual/IGradientVisual.h"
+#include "visual/ISpriteVisual.h"
 
 namespace nui
 {
 
 	Panel::Panel()
 		: m_background_type(BackgroundType::None)
+		, m_background_color_visual(nullptr)
+		, m_background_gradient_visual(nullptr)
+		, m_background_sprite_visual(nullptr)
 	{
 
 	}
 
 	Panel::~Panel()
 	{
+		if (m_background_color_visual)
+		{
+			m_background_color_visual->DecRef();
+			m_background_color_visual = nullptr;
+		}
 
+		if (m_background_gradient_visual)
+		{
+			m_background_gradient_visual->DecRef();
+			m_background_gradient_visual = nullptr;
+		}
+
+		if (m_background_sprite_visual)
+		{
+			m_background_sprite_visual->DecRef();
+			m_background_sprite_visual = nullptr;
+		}
 	}
 
 	void Panel::AddChild(Widget* child)
@@ -36,57 +58,57 @@ namespace nui
 		this->m_children.erase(iter);
 	}
 
-	void Panel::SetBackgroundType(BackgroundType type)
-	{
-		if (m_background_type == type)
-			return;
-		m_background_type = type;
+	//void Panel::SetBackgroundType(BackgroundType type)
+	//{
+	//	if (m_background_type == type)
+	//		return;
+	//	m_background_type = type;
 
-		switch (type)
-		{
-		case BackgroundType::None:
-			break;
-		case BackgroundType::Solid:
-			break;
-		case BackgroundType::Gradient:
-			break;
-		case BackgroundType::Image:
-			break;
-		default:
-			break;
-		}
+	//	switch (type)
+	//	{
+	//	case BackgroundType::None:
+	//		break;
+	//	case BackgroundType::Solid:
+	//		break;
+	//	case BackgroundType::Gradient:
+	//		break;
+	//	case BackgroundType::Image:
+	//		break;
+	//	default:
+	//		break;
+	//	}
 
-	}
+	//}
 
-	void Panel::SetBackgroundColor(const Color& color)
-	{
+	//void Panel::SetBackgroundColor(const Color& color)
+	//{
 
-	}
+	//}
 
-	Color Panel::GetBackgroundColor() const
-	{
+	//Color Panel::GetBackgroundColor() const
+	//{
 
-	}
+	//}
 
-	void Panel::SetBackgroundGradient(const Color& start_color, const Color& end_color)
-	{
+	//void Panel::SetBackgroundGradient(const Color& start_color, const Color& end_color)
+	//{
 
-	}
+	//}
 
-	Color Panel::GetBackgroundGradientStartColor() const
-	{
+	//Color Panel::GetBackgroundGradientStartColor() const
+	//{
 
-	}
+	//}
 
-	Color Panel::GetBackgroundGradientEndColor() const
-	{
+	//Color Panel::GetBackgroundGradientEndColor() const
+	//{
 
-	}
+	//}
 
-	void Panel::SetBackgroundImage(const std::string& file_name, TextureResType tex_res_type /*= TextureResType::Normal*/)
-	{
+	//void Panel::SetBackgroundImage(const std::string& file_name, TextureResType tex_res_type /*= TextureResType::Normal*/)
+	//{
 
-	}
+	//}
 
 	Size Panel::DoMeasure(Size available_size)
 	{

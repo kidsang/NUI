@@ -31,8 +31,8 @@
 #include "widget/Widget.h"
 #include "widget/Panel.h"
 #include "widget/StackPanel.h"
-#include "visual/Visual.h"
-#include "visual/CocosVisual.h"
+#include "visual/IVisual.h"
+#include "cocosvisual/CocosVisual.h"
 
 USING_NS_CC;
 
@@ -146,7 +146,7 @@ bool HelloWorld::init()
     auto visibleSize = Director::getInstance()->getVisibleSize();
 	root_panel->SetSize(visibleSize.width, visibleSize.height);
 
-	nui::CocosVisual* root_visual = (nui::CocosVisual*)root_panel->GetVisual();
+	nui::CocosVisual* root_visual = (nui::CocosVisual*)root_panel->GetVisualRoot();
 	this->addChild(root_visual->GetCCNode());
 	
 

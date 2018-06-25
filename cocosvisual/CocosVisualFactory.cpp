@@ -4,7 +4,7 @@
 namespace nui
 {
 
-	Visual* CocosVisualFactory::CreateEmpty()
+	IVisual* CocosVisualFactory::CreateEmpty()
 	{
 		throw std::logic_error("The method or operation is not implemented.");
 	}

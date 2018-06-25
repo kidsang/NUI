@@ -7,6 +7,8 @@ set(NUI_CORE_SOURCE
 	core/Thickness.h
 	core/Color.h
 	core/Color.cpp
+	core/Ref.h
+	core/Ref.cpp
 	core/LayoutManager.h
 	core/LayoutManager.cpp
 )

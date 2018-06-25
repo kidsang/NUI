@@ -12,12 +12,13 @@
 #include "core/Size.h"
 #include "core/Rect.h"
 #include "core/Thickness.h"
+#include "core/Ref.h"
 #include "core/LayoutManager.h"
-#include "visual/Visual.h"
+#include "visual/IVisual.h"
 
 namespace nui
 {
-	class Widget
+	class Widget : public Ref
 	{
 		enum class InternalFlags;
 
@@ -112,7 +113,7 @@ namespace nui
 			return m_parent;
 		}
 
-		inline Visual* GetVisualRoot() const
+		inline IVisual* GetVisualRoot() const
 		{
 			return m_visual_root;
 		}
@@ -280,7 +281,7 @@ namespace nui
 		// 布局树上的层级，越小越靠近根部
 		uint32_t m_tree_level;
 		// 渲染树节点
-		Visual* m_visual_root;
+		IVisual* m_visual_root;
 
 		// 用于判断Widget是否位于布局队列中
 		LayoutRequest* m_measure_request;

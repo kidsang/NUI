@@ -5,11 +5,13 @@ project(nui)
 include(core/CMakeLists.txt)
 include(widget/CMakeLists.txt)
 include(visual/CMakeLists.txt)
+include(cocosvisual/CMakeLists.txt)
 
 set(NUI_SOURCE NUI.h NUI.cpp
 	${NUI_CORE_SOURCE}
 	${NUI_WIDGET_SOURCE}
 	${NUI_VISUAL_SOURCE}
+	${NUI_COCOS_VISUAL_SOURCE}
 )
 
 include_directories(${PROJECT_SOURCE_DIR})

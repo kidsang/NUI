@@ -3,11 +3,12 @@
 #define NUI_CocosVisual_h__
 
 #include "cocos2d.h"
-#include "Visual.h"
+#include "visual/IVisual.h"
+#include "core/Ref.h"
 
 namespace nui
 {
-	class CocosVisual : public Visual
+	class CocosVisual : public IVisual, public Ref
 	{
 	public:
 		CocosVisual();
@@ -19,11 +20,15 @@ namespace nui
 			return m_ccnode;
 		}
 
-		virtual void AddChild(Visual* child);
+		virtual void AddRef();
 
-		virtual void RemoveChild(Visual* child);
+		virtual void DecRef();
 
-		virtual void AddChildAt(Visual* child, uint32_t index);
+		virtual void AddChild(IVisual* child);
+
+		virtual void RemoveChild(IVisual* child);
+
+		virtual void AddChildAt(IVisual* child, uint32_t index);
 
 		virtual void RemoveChildAt(uint32_t index);
 

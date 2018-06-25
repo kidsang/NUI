@@ -25,13 +25,23 @@ namespace nui
 		}
 	}
 
-	void CocosVisual::AddChild(Visual* child)
+	void CocosVisual::AddRef()
+	{
+		Ref::AddRef();
+	}
+
+	void CocosVisual::DecRef()
+	{
+		Ref::DecRef();
+	}
+
+	void CocosVisual::AddChild(IVisual* child)
 	{
 		int z_order = (int)m_ccnode->getChildrenCount();
 		m_ccnode->addChild(((CocosVisual*)child)->m_ccnode, z_order);
 	}
 
-	void CocosVisual::RemoveChild(Visual* child)
+	void CocosVisual::RemoveChild(IVisual* child)
 	{
 		cocos2d::Node* child_ccnode = ((CocosVisual*)child)->m_ccnode;
 		m_ccnode->removeChild(child_ccnode);
@@ -47,7 +57,7 @@ namespace nui
 		}
 	}
 
-	void CocosVisual::AddChildAt(Visual* child, uint32_t index)
+	void CocosVisual::AddChildAt(IVisual* child, uint32_t index)
 	{
 		uint32_t child_count = (uint32_t)m_ccnode->getChildrenCount();
 		if (index > child_count)

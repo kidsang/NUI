@@ -4,7 +4,7 @@
 
 namespace nui
 {
-	class Visual;
+	struct IVisual;
 
 	class VisualFactory
 	{
@@ -13,15 +13,15 @@ namespace nui
 		static VisualFactory* Instance() { return s_instance; }
 
 	public:
-		virtual Visual* CreateEmpty() = 0;
+		virtual IVisual* CreateEmpty() = 0;
 
-		//virtual Visual* CreateColor() = 0;
+		//virtual IVisual* CreateColor() = 0;
 
-		//virtual Visual* CreateGradient() = 0;
+		//virtual IVisual* CreateGradient() = 0;
 
-		//virtual Visual* CreateSprite() = 0;
+		//virtual IVisual* CreateSprite() = 0;
 
-		//virtual Visual* CreateScale9Sprite() = 0;
+		//virtual IVisual* CreateScale9Sprite() = 0;
 
 	protected:
 		VisualFactory() {};

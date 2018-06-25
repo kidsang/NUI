@@ -1,5 +1,5 @@
 #include "Widget.h"
-#include "visual/CocosVisualFactory.h"
+#include "visual/VisualFactory.h"
 
 namespace nui
 {
@@ -233,7 +233,7 @@ namespace nui
 	void Widget::InitVisualRoot()
 	{
 		NUI_ASSERT(!m_visual_root);
-		m_visual_root = CocosVisualFactory::Instance()->CreateEmpty();
+		m_visual_root = VisualFactory::Instance()->CreateEmpty();
 	}
 
 }

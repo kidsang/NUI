@@ -8,6 +8,10 @@
 
 namespace nui
 {
+	struct IColorVisual;
+	struct IGradientVisual;
+	struct ISpriteVisual;
+
 	class Panel : public Widget
 	{
 	public:
@@ -90,6 +94,9 @@ namespace nui
 		std::vector<Widget*> m_children;
 
 		BackgroundType m_background_type;
+		IColorVisual* m_background_color_visual;
+		IGradientVisual* m_background_gradient_visual;
+		ISpriteVisual* m_background_sprite_visual;
 
 #pragma endregion private fields
 	};
